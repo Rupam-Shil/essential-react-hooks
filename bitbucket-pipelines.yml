@@ -1,0 +1,49 @@
+image: python:3.7.4-alpine3.10
+
+definitions:
+  services:
+    docker:
+      memory: 3072
+
+pipelines:
+  custom:
+    '{feature/*,fix/*}':
+      - step:
+          deployment: Develop
+          services:
+            - docker
+          caches:
+            - pip
+          script:
+            - /bin/sh pipeline.sh
+
+  branches:
+    production:
+      - step:
+          deployment: Production
+          services:
+            - docker
+          caches:
+            - pip
+          script:
+            - /bin/sh pipeline.sh
+
+    uat:
+      - step:
+          deployment: UAT
+          services:
+            - docker
+          caches:
+            - pip
+          script:
+            - /bin/sh pipeline.sh
+
+    development:
+      - step:
+          deployment: Develop
+          services:
+            - docker
+          caches:
+            - pip
+          script:
+            - /bin/sh pipeline.sh
